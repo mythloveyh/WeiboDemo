@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+
 @class ENHUser;
 
 @interface ENHStatus : NSObject
@@ -18,7 +19,7 @@
 @property (nonatomic,strong) NSString* source;
 @property (nonatomic,strong) NSArray* pic_urls;
 @property (nonatomic,strong) NSDictionary* retweeted_status;
-@property (nonatomic,assign,getter=isHavePics) BOOL havePics;
+@property (nonatomic, assign, getter=isHavePics) BOOL havePics;
 
 + (instancetype)statusInitWithDict:(NSDictionary*) dict;
 

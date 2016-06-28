@@ -10,8 +10,10 @@
 #import "ENHStatusFrame.h"
 #import "ENHUser.h"
 #import "ENHStatus.h"
+#import "ENHStatusPhoto.h"
 #import "UIImageView+WebCache.h"
 #import "UIView+Extension.h"
+#import "ENHToolBar.h"
 
 @interface ENHTableViewCell ()
 
@@ -49,7 +51,7 @@
 @property (nonatomic,weak) UIImageView* retweetPhotoView;
 
 /** 工具栏 */
-@property (nonatomic,weak) UIView* toolBar;
+@property (nonatomic,weak) ENHToolBar* toolBar;
 @end
 
 @implementation ENHTableViewCell
@@ -57,6 +59,9 @@
 -(instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.backgroundColor = [UIColor clearColor];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        
         //设置原创微博
         [self setupOriginal];
         //设置转发微博
@@ -68,7 +73,7 @@
 }
 
 - (void)setupToolBar{
-    UIView* toolBar = [[UIView alloc] init];
+    ENHToolBar* toolBar = [[ENHToolBar alloc] init];
     self.toolBar = toolBar;
     [self.contentView addSubview:toolBar];
 }
@@ -100,6 +105,7 @@
     /** 原创微博*/
     UIView* originalView = [[UIView alloc] init];
     self.originalView = originalView;
+    originalView.backgroundColor = [UIColor whiteColor];
     [self.contentView addSubview:originalView];
     /** 头像*/
     UIImageView* iconView = [[UIImageView alloc] init];
@@ -133,12 +139,11 @@
 
 -(void)setStatusFrame:(ENHStatusFrame *)statusFrame{
     _statusFrame = statusFrame;
-    
+    self.originalView.frame = statusFrame.originalViewF;
     
     ENHStatus* status = statusFrame.status;
     
     ENHUser* user = status.user;
-    
     /** 头像*/
     self.iconView.frame = statusFrame.iconViewF;
     [self.iconView sd_setImageWithURL:[NSURL URLWithString:user.profile_image_url] placeholderImage:[UIImage imageNamed:@"avatar_default_small"]];
@@ -159,7 +164,7 @@
     self.photoView.frame = statusFrame.photoViewF;
     if (status.pic_urls.count > 0) {
         self.photoView.hidden = NO;
-        [self.photoView sd_setImageWithURL:[NSURL URLWithString:[status.pic_urls objectAtIndex:0][@"thumbnail_pic"]] placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"]];
+        [self.photoView sd_setImageWithURL:[NSURL URLWithString:((ENHStatusPhoto*)[status.pic_urls objectAtIndex:0]).thumbnail_pic] placeholderImage:[UIImage imageNamed:@"timeline_image_placeholder"]];
     }else{
         self.photoView.hidden = YES;
     }
@@ -188,6 +193,7 @@
     /** 转发微博 */
     if (status.retweeted_status){
         self.retweetView.frame = statusFrame.retweetViewF;
+        self.retweetView.backgroundColor = [UIColor whiteColor];
         self.retweetView.hidden = NO;
         self.retweetContentLabel.hidden = NO;
         ENHStatus* retweetStatus = [ENHStatus statusInitWithDict:status.retweeted_status];
@@ -212,10 +218,12 @@
     }
 
     self.toolBar.frame = statusFrame.toolBarF;
-    self.toolBar.backgroundColor = [UIColor redColor];
-    
-    self.originalView.height = statusFrame.cellHeight;
-    
+    self.toolBar.backgroundColor = [UIColor whiteColor];
+}
+
+- (void)setFrame:(CGRect)frame{
+    frame = CGRectMake(frame.origin.x, frame.origin.y + 10 , frame.size.width, frame.size.height );
+    [super setFrame:frame];
 }
 
 - (void)awakeFromNib {

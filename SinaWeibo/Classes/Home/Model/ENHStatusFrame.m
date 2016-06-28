@@ -122,9 +122,9 @@
                                            CGRectGetMaxY(self.retweetContentLabelF));
         }
         
-        toolBarY = CGRectGetMaxY(self.retweetViewF) + ENHStatusBorderW;
+        toolBarY = CGRectGetMaxY(self.retweetViewF) + 1.f;
     }else{
-        toolBarY = CGRectGetMaxY(self.originalViewF) + ENHStatusBorderW;
+        toolBarY = CGRectGetMaxY(self.originalViewF) + 1.f;
     }
     
     CGFloat toolBarX = 0;
@@ -132,7 +132,7 @@
     CGFloat toolBarH = 35.f;
     self.toolBarF = CGRectMake(toolBarX, toolBarY, toolBarW, toolBarH);
     
-    self.cellHeight = CGRectGetMaxY(self.toolBarF);
+    self.cellHeight = CGRectGetMaxY(self.toolBarF) + 10.f;
 }
 
 @end

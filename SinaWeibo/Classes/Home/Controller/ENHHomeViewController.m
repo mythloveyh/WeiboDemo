@@ -6,6 +6,7 @@
 //  Copyright © 2015年 Digger. All rights reserved.
 //
 
+#import "MJExtension.h"
 #import "ENHHomeViewController.h"
 #import "ENHTestViewController.h"
 #import "AFNetworking.h"
@@ -47,6 +48,8 @@
     //设置tableview
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
+    self.tableView.backgroundColor = [UIColor colorWithRed:211.0/255.0 green:211.0/255.0 blue:211.0/255.0 alpha:1.0];
+    self.tableView.separatorStyle = UITableViewCellSelectionStyleNone;
     
     //下拉刷新
     [self refreshData];
@@ -112,16 +115,15 @@
     AFHTTPRequestOperationManager* mgr = [AFHTTPRequestOperationManager manager];
     NSMutableDictionary* params = [NSMutableDictionary dictionary];
     params[@"access_token"] = account.access_token;
-    ENHStatusFrame* statusFrame = [self.statusFrames lastObject];
-    
+    ENHStatusFrame* statusFrame = [self.statusFrames firstObject];
     params[@"since_id"] = statusFrame.status.idstr;
-    [mgr GET:@"https://api.weibo.com/2/statuses/friends_timeline.json" parameters:params success:^(AFHTTPRequestOperation * _Nonnull operation, NSDictionary*  _Nonnull responseObject) {
-        
+    [mgr GET:@"https://api.weibo.com/2/statuses/home_timeline.json" parameters:params success:^(AFHTTPRequestOperation * _Nonnull operation, NSDictionary*  _Nonnull responseObject) {
         NSMutableArray* newData = [NSMutableArray array];
         NSArray* array = responseObject[@"statuses"];
         for (NSDictionary* dict in array) {
             ENHStatusFrame* sFrame = [[ENHStatusFrame alloc] init];
-            sFrame.status = [ENHStatus statusInitWithDict:dict];
+            sFrame.status = [ENHStatus mj_objectWithKeyValues:dict];
+            
             [newData addObject:sFrame];
         }
         NSRange range = NSMakeRange(0, [newData count]);
@@ -133,7 +135,7 @@
         if (newData.count) {
             [self.tableView reloadData];
         }
-        
+        NSLog(@"%@",responseObject);
         //显示最新微博数量
         [self showNewStatusCount: newData.count];
     } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {

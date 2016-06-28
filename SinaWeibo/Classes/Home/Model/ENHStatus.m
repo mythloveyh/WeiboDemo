@@ -6,10 +6,16 @@
 //  Copyright © 2016年 Digger. All rights reserved.
 //
 
+#import "MJExtension.h"
 #import "ENHStatus.h"
 #import "ENHUser.h"
+#import "ENHStatusPhoto.h"
 
 @implementation ENHStatus
+
++ (NSDictionary *)mj_objectClassInArray{
+    return @{@"pic_urls":[ENHStatusPhoto class]};
+}
 
 + (instancetype)statusInitWithDict:(NSDictionary*) dict{
     ENHStatus* status = [ENHStatus new];
@@ -33,6 +39,5 @@
     }
     return NO;
 }
-
 
 @end
