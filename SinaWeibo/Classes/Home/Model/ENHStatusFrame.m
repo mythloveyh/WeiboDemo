@@ -115,11 +115,11 @@
             CGSize  retweetPhotoViewSize = CGSizeMake(100, 100);
             self.retweetPhotoViewF = (CGRect){{retweetPhotoViewX,retweetPhotoViewY},retweetPhotoViewSize};
             self.retweetViewF = CGRectMake(0, CGRectGetMaxY(self.originalViewF), cellW,
-                                      CGRectGetMaxY(self.retweetPhotoViewF));
+                                      CGRectGetMaxY(self.retweetPhotoViewF) + ENHStatusBorderW);
             
         }else{
             self.retweetViewF = CGRectMake(0, CGRectGetMaxY(self.originalViewF), cellW,
-                                           CGRectGetMaxY(self.retweetContentLabelF));
+                                           CGRectGetMaxY(self.retweetContentLabelF) + ENHStatusBorderW);
         }
         
         toolBarY = CGRectGetMaxY(self.retweetViewF) + 1.f;

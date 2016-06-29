@@ -20,6 +20,9 @@
 @property (nonatomic,strong) NSArray* pic_urls;
 @property (nonatomic,strong) NSDictionary* retweeted_status;
 @property (nonatomic, assign, getter=isHavePics) BOOL havePics;
+@property (nonatomic, assign) int reposts_count;
+@property (nonatomic, assign) int comments_count;
+@property (nonatomic, assign) int attitudes_count;
 
 + (instancetype)statusInitWithDict:(NSDictionary*) dict;
 

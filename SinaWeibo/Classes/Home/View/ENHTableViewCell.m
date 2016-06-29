@@ -218,6 +218,7 @@
     }
 
     self.toolBar.frame = statusFrame.toolBarF;
+    self.toolBar.status = status;
     self.toolBar.backgroundColor = [UIColor whiteColor];
 }
 

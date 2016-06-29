@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class ENHStatus;
 @interface ENHToolBar : UIView
+
+@property (nonatomic,strong) ENHStatus* status;
 
 @end
